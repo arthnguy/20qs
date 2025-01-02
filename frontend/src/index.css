@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.spotlight {
+    background: radial-gradient(ellipse calc(80vw - 160px) calc(80vh - 58px) at calc(50vw + 80px) calc(50vh + 29px), rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 60%);
+}
