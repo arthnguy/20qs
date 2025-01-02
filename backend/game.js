@@ -292,6 +292,7 @@ class Game {
         if (!this._getPlayerByID(questionerID).hasQs) {
             this._io.to(questionerID).emit("set_qa_state", "lose");
             this._io.to(this._roomID).emit("update_statuses", this._players.map(el => (el.guessedChar ? "green" : (!el.hasQs ? "red" : ((this.answerer === el.id) ? "gray" : (el.late ? "blue" : "white"))))));
+            this._handleDoneQA(false);
         }
     }
 
