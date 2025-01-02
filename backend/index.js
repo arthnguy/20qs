@@ -8,13 +8,15 @@ const games = new Map();
 const app = express();
 app.use(cors());
 
-const server = app.listen(3000, () => {
+const server = app.listen(process.env.PORT, () => {
     console.log("Listening to port 3000");
 });
 
 const io = new Server(server, {
     cors: {
-        origin: "*",
+        origin: process.env.ORIGIN,
+        methods: ["GET"],
+        allowedHeaders: ["Access-Control-Allow-Origin"]
     }
 });
 
