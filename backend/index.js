@@ -78,6 +78,10 @@ io.on("connection", socket => {
     });
 
     socket.on("disconnect", () => {
+        if (games.get(socket.id) === undefined) {
+            return;
+        }
+
         const roomID = games.get(socket.id).roomID;
 
         games.get(socket.id).removePlayer(socket.id);
