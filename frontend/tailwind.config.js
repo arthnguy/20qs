@@ -52,7 +52,7 @@ export default {
           "100%": { transform: "translateX(calc(-100vw - 50%))" },
         },
         slideInLeft: {
-          "0%": { transform: "translateX(-100vw)" },
+          "0%": { transform: "translateX(-100vw - 50%)" },
           "100%": { transform: "translateX(0)" },
         },
         fadeIn: {

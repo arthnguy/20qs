@@ -51,11 +51,11 @@ const QuestionerActive = () => {
             clearInterval(timer);
             timer = null;
             socket.emit("send_question", question, guessingChar, 0);
-            setShake(true);
+            setTimeout(() => setShake(true), 50);
             setTimeout(() => {
                 setShake(false);
                 setCardAnims("");
-            }, 200);
+            }, 250);
         }
     }, [time]);
 
@@ -63,11 +63,11 @@ const QuestionerActive = () => {
     const sendQuestion = () => {
         oldQuestion = question;
         socket.emit("send_question", question, guessingChar, time);
-        setShake(true);
+        setTimeout(() => setShake(true), 50);
         setTimeout(() => {
             setShake(false);
             setCardAnims("");
-        }, 200);
+        }, 250);
 
         setTime(questionTime);            
     };

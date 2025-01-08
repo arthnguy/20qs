@@ -1,7 +1,10 @@
 import { Server } from "socket.io";
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 import Game from "./game.js";
+
+dotenv.config();
 
 const games = new Map();
 

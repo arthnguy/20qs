@@ -6,13 +6,7 @@ import AnswererWaiting from "./AnswererWaiting.jsx";
 
 const Answerer = () => {
     const { gameState, qaState } = useContext(GameContext);
-    const [prevState, setPrevState] = useState(qaState);
-    const [currState, setCurrState] = useState("");
     const [styles, setStyles] = useState("");
-    const components = {
-        active: <AnswererActive />,
-        waiting: <AnswererWaiting />
-    };
 
     useEffect(() => {
         if (qaState === "selection") {
@@ -26,22 +20,14 @@ const Answerer = () => {
         }
     }, [qaState, gameState]);
 
-    useEffect(() => {
-        setPrevState(currState);
-        
-        setTimeout(() => {
-            setPrevState("");
-            setCurrState(qaState);
-        }, 200);
-    }, [qaState]);
-
     return (
         <>
             {
                 gameState !== "final" &&
+                gameState === "answerer" &&
                 <div className="absolute w-full h-full flex flex-col justify-center items-center">
-                    {components[qaState]}
-                    {components[prevState]}
+                    <AnswererActive />
+                    <AnswererWaiting />
                     <div className={"w-full " + styles}>
                         <CharacterCard editable={qaState === "selection"} />
                     </div>

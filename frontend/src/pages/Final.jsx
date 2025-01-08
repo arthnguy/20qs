@@ -3,16 +3,20 @@ import GameContext from "../GameContext";
 
 const Final = () => {
     const { gameState, playerList, scores } = useContext(GameContext);
-    const [ranking, setRanking] = useState(scores.map((element, index) => [element, playerList[index]]).toSorted().toReversed());
+    const [ranking, setRanking] = useState([]);
     const [gold, setGold] = useState(false);
     const [silver, setSilver] = useState(false);
     const [bronze, setBronze] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => setBronze(true), 1000);
-        setTimeout(() => setSilver(true), 2000);
-        setTimeout(() => setGold(true), 3000);
-    });
+        setRanking(scores.map((element, index) => [element, playerList[index]]).toSorted().toReversed());
+
+        if (gameState === "final") {
+            setTimeout(() => setBronze(true), 1000);
+            setTimeout(() => setSilver(true), 2000);
+            setTimeout(() => setGold(true), 3000);
+        }
+    }, [gameState]);
 
     return (
         <>

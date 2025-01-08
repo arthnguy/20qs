@@ -128,7 +128,10 @@ class Game {
     }
 
     _handleDoneQA(forced) {
+        console.log(this.answerer);
         for (let i = 0; i < this._players.length; ++i) {
+            console.log(this._players[i].id);
+
             if (this._answererIndex >= this._players.length || this._players[i].id === this.answerer) {
                 continue;
             }
@@ -235,6 +238,7 @@ class Game {
             this._io.to(this._players[i].id).emit("set_player_index", i);
         }
         this._io.to(this._roomID).emit("update_player_list", this._players.map(el => el.name));
+        this._io.to(this._roomID).emit("update_scores", this._players.map(el => el.score));
 
         // Nothing else to do
         if (this._players.length === 0) {
@@ -263,8 +267,9 @@ class Game {
 
         if (progress && this._inProgress) {
             this._handleDoneQA(true);
-            this._io.to(this._roomID).emit("update_statuses", this._players.map(el => (el.guessedChar ? "green" : (!el.hasQs ? "red" : (el.late ? "blue" : "white")))));
         }
+
+        this._io.to(this._roomID).emit("update_statuses", this._players.map(el => (el.guessedChar ? "green" : (!el.hasQs ? "red" : ((this.answerer === el.id) ? "gray" : (el.late ? "blue" : "white"))))));
     }
 
     setChar(char) {

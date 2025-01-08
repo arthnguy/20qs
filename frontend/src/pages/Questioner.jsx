@@ -42,6 +42,7 @@ const Questioner = () => {
         <>
             {
                 gameState !== "final" &&
+                gameState === "questioner" &&
                 <div className="absolute w-full h-full flex justify-between">
                     <div className="relative w-5/6 h-full">
                         {components[qaState]}

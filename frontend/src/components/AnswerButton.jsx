@@ -1,6 +1,6 @@
-const AnswerButton = ({ color, icon, sendAnswer }) => {
+const AnswerButton = ({ color, icon, sendAnswer, clickable }) => {
     return (
-        <button className={"w-12 h-12 text-white border-black border-2 rounded-md text-xl " + color} onClick={() => sendAnswer(icon)}>{icon}</button>
+        <button className={(clickable ? "pointer-events-auto " : "pointer-events-none ") + " w-12 h-12 text-white border-black border-2 rounded-md text-xl " + color} onClick={() => sendAnswer(icon)}>{icon}</button>
     );
 };
 

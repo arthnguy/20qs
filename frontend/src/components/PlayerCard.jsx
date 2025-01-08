@@ -14,7 +14,6 @@ const PlayerCard = ({ playerName, score, color, bold }) => {
         const increment = (newScore - currScore) / steps;
 
         const timer = setInterval(() => {
-            console.log(recent);
             if (recent !== "overview") {
                 clearInterval(timer);
                 setCurrScore(newScore);
@@ -38,7 +37,7 @@ const PlayerCard = ({ playerName, score, color, bold }) => {
     useEffect(() => {
         clearTimeout(queued);
 
-        if (currScore < score && gameState !== "late") {
+        if (currScore < score && gameState === "overview") {
             queued = setTimeout(() => countUp(score), 2000);
         } else {
             setCurrScore(score);
