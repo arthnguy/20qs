@@ -50,24 +50,26 @@ const QuestionerActive = () => {
             setTime(questionTime);
             clearInterval(timer);
             timer = null;
-            socket.emit("send_question", question, guessingChar, 0);
-            setTimeout(() => setShake(true), 50);
-            setTimeout(() => {
-                setShake(false);
-                setCardAnims("");
-            }, 250);
+            socket.emit("send_question", question, guessingChar, 0, (response) => {
+                setShake(true);
+                setTimeout(() => {
+                    setShake(false);
+                    setCardAnims("");
+                }, 200);
+            });
         }
     }, [time]);
 
     // Sends question and waits for response
     const sendQuestion = () => {
         oldQuestion = question;
-        socket.emit("send_question", question, guessingChar, time);
-        setTimeout(() => setShake(true), 50);
-        setTimeout(() => {
-            setShake(false);
-            setCardAnims("");
-        }, 250);
+        socket.emit("send_question", question, guessingChar, 0, (response) => {
+            setShake(true);
+            setTimeout(() => {
+                setShake(false);
+                setCardAnims("");
+            }, 200);
+        });
 
         setTime(questionTime);            
     };

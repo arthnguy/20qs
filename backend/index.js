@@ -31,7 +31,7 @@ io.on("connection", socket => {
         games.get(socket.id).startQA();
     });
 
-    socket.on("send_question", (query, guessingChar, timeLeft) => {
+    socket.on("send_question", (query, guessingChar, timeLeft, callback) => {
         const game = games.get(socket.id);
 
         if (!guessingChar) {
@@ -44,6 +44,7 @@ io.on("connection", socket => {
             }
         } else {
             game.checkChar(socket.id, query);
+            callback("done");
         }
     });
 
