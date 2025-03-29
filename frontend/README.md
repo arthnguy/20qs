@@ -1,8 +1,5 @@
-# React + Vite
+# 20qs
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The classic game of Twenty Questions meets the world wide web. Enjoy the game in a more competitive light, with points to see which person is the best at guessing the character!
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Play here: https://20qs.netlify.app/.
