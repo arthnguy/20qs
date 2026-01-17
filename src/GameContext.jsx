@@ -23,6 +23,7 @@ export const GameContextProvider = ({ children }) => {
 	const [roundCount, setRoundCount] = useState(3);
 	const [questionTime, setQuestionTime] = useState(30);
 	const [playerIndex, setPlayerIndex] = useState(0);
+	const [roomFullError, setRoomFullError] = useState("");
 
 	useEffect(() => {
 		const onUpdateRoomID = newRoomID => {
@@ -93,6 +94,11 @@ export const GameContextProvider = ({ children }) => {
 			setPlayerIndex(newIndex);
 		}
 
+		const onRoomFull = (message) => {
+			setRoomFullError(message);
+			setInGame(false);
+		}
+
 		socket.on("update_room_id", onUpdateRoomID);
 		socket.on("update_player_list", onUpdatePlayerList);
 		socket.on("first_player", onFirstPlayer);
@@ -109,6 +115,7 @@ export const GameContextProvider = ({ children }) => {
 		socket.on("update_statuses", onUpdateStatuses);
 		socket.on("set_curr_round", onSetCurrRound);
 		socket.on("set_player_index", onSetPlayerIndex);
+		socket.on("room_full", onRoomFull);
 
 		return () => {
 			socket.off("update_room_id", onUpdateRoomID);
@@ -127,6 +134,7 @@ export const GameContextProvider = ({ children }) => {
 			socket.off("update_statuses", onUpdateStatuses);
 			socket.off("set_curr_round", onSetCurrRound);
 			socket.off("set_player_index", onSetPlayerIndex);
+			socket.off("room_full", onRoomFull);
 		}
 	}, []);
 
@@ -152,6 +160,8 @@ export const GameContextProvider = ({ children }) => {
 				scores,
 				statuses,
 				playerIndex,
+				roomFullError,
+				setRoomFullError,
             }}
         >
             {children}

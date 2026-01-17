@@ -20,7 +20,12 @@ const JoinRoom = ({ onJoinRoom }) => {
                     placeholder="Display name"
                 />
             </div>
-            <button onClick={() => onJoinRoom(roomID, playerName)}>Join Room</button>
+            <button 
+                onClick={() => onJoinRoom(roomID, playerName)}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+            >
+                Join Room
+            </button>
         </div>
     );
 };

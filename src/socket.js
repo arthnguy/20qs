@@ -1,5 +1,7 @@
 import io from "socket.io-client";
 
-const socket = io.connect("https://two0qs.onrender.com");
+const socket = io.connect(
+  import.meta.env.VITE_APP_BACKEND
+);
 
 export default socket;

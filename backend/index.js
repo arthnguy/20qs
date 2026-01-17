@@ -2,11 +2,11 @@ import { Server } from "socket.io";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import Game from "./game.js";
+import GameManager from "./game-manager.js";
 
 dotenv.config();
 
-const games = new Map();
+const gameManager = new GameManager();
 
 const app = express();
 app.use(cors());
@@ -26,13 +26,16 @@ const io = new Server(server, {
 io.on("connection", socket => {
     console.log(`User ${socket.id} connected`);
     
-    // Communicates from client to server
     socket.on("start_qa", () => {
-        games.get(socket.id).startQA();
+        const game = gameManager.getGameByPlayer(socket.id);
+        if (!game) return;
+        
+        game.startQA();
     });
 
     socket.on("send_question", (query, guessingChar, timeLeft, callback) => {
-        const game = games.get(socket.id);
+        const game = gameManager.getGameByPlayer(socket.id);
+        if (!game) return;
 
         if (!guessingChar) {
             const firstQ = !game.hasQs;
@@ -44,12 +47,15 @@ io.on("connection", socket => {
             }
         } else {
             game.checkChar(socket.id, query);
-            callback("done");
+            if (callback && typeof callback === 'function') {
+                callback("done");
+            }
         }
     });
 
     socket.on("send_answer", (questionerID, answer, guessingChar) => {
-        const game = games.get(socket.id);
+        const game = gameManager.getGameByPlayer(socket.id);
+        if (!game) return;
 
         game.sendA(questionerID, answer, guessingChar);
         if (game.hasQs) {
@@ -58,42 +64,32 @@ io.on("connection", socket => {
     });
 
     socket.on("set_char", char => {
-        const game = games.get(socket.id);
+        const game = gameManager.getGameByPlayer(socket.id);
+        if (!game) return;
 
         game.setChar(char);
         game.finishSelection();
     });
 
     socket.on("join_room", (roomID, playerName) => {
-        // Make game if game is nonexistent
-        if (games.get(roomID) === undefined) {
-            games.set(roomID, new Game(io, roomID));
+        const game = gameManager.createOrJoinGame(roomID, socket, playerName, io);
+        if (!game) {
+            // Room was full, player couldn't join
+            socket.emit("room_full", "This room is full (8 players max)");
         }
-        
-        const game = games.get(roomID);
-        // Join and update player list and current room ID
-        games.set(socket.id, game);
-        game.addPlayer(socket, playerName);
-        game.resetHost();
     });
 
     socket.on("set_game_settings", (roomID, roundCount, questionTime) => {
-        games.get(roomID).setRoundCount(roundCount).setQuestionTime(questionTime);
+        const game = gameManager.getGameByRoom(roomID);
+        if (!game) return;
+        
+        game.setRoundCount(roundCount).setQuestionTime(questionTime);
     });
 
     socket.on("disconnect", () => {
-        if (games.get(socket.id) === undefined) {
-            return;
-        }
-
-        const roomID = games.get(socket.id).roomID;
-
-        games.get(socket.id).removePlayer(socket.id);
-        games.delete(socket.id);
-        if (games.get(roomID).players.length === 0) {
-            games.delete(roomID);
-        } else {
-            games.get(roomID).resetHost();
+        const game = gameManager.removePlayer(socket.id);
+        if (game && game.players.length > 0) {
+            game.resetHost();
         }
     });
 });

@@ -11,9 +11,11 @@ export default {
     },
     extend: {
       keyframes: {
-        scrollDots: {
-          "0%": { backgroundPosition: '0 0' },
-          "100%": { backgroundPosition: '-30px 30px' },
+        floatingShapes: {
+          '0%': { transform: 'translate(0px, 0px) rotate(0deg)' },
+          '33%': { transform: 'translate(30px, -30px) rotate(120deg)' },
+          '66%': { transform: 'translate(-20px, 20px) rotate(240deg)' },
+          '100%': { transform: 'translate(0px, 0px) rotate(360deg)' },
         },
         pulseScale: {
           '0%, 100%': { transform: 'scale(0.75)' },
@@ -94,7 +96,7 @@ export default {
         }
       },
       animation: {
-        "scroll-dots": "scrollDots 2s linear infinite",
+        "floating-shapes": "floatingShapes 15s ease-in-out infinite",
         "pulse-scale": "pulseScale 5s ease-in-out infinite",
         "slide-from-left": "slideFromLeft 0.5s ease-out forwards",
         "slide-from-right": "slideFromRight 0.5s ease-out forwards",
