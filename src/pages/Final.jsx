@@ -3,7 +3,7 @@ import GameContext from "../GameContext";
 import socket from "../socket";
 
 const Final = () => {
-    const { gameState, playerList, scores, currRoomID, isHost, roundCount } = useContext(GameContext);
+    const { gameState, playerList, scores, currRoomID, isHost, roundCount, playerIndex } = useContext(GameContext);
     const [ranking, setRanking] = useState([]);
     const [showPodium, setShowPodium] = useState(false);
     const [showStats, setShowStats] = useState(false);
@@ -16,7 +16,8 @@ const Final = () => {
             const sortedRanking = scores.map((element, index) => [element, playerList[index], index]).toSorted().toReversed();
             setRanking(sortedRanking);
             
-            const myRank = sortedRanking.findIndex(([score, name, originalIndex]) => originalIndex === 0) + 1;
+            // Find current player's rank using playerIndex from context
+            const myRank = sortedRanking.findIndex(([score, name, originalIndex]) => originalIndex === playerIndex) + 1;
             setCurrentPlayerRank(myRank);
 
             // Staggered reveal animation
@@ -25,7 +26,7 @@ const Final = () => {
             setTimeout(() => setShowStats(true), 2000);
             setTimeout(() => setShowActions(true), 3500);
         }
-    }, [gameState, scores, playerList]);
+    }, [gameState, scores, playerList, playerIndex]);
 
     const getMedalEmoji = (rank) => {
         switch (rank) {
@@ -160,7 +161,7 @@ const Final = () => {
                                                     <div 
                                                         key={index}
                                                         className={`flex items-center justify-between p-4 rounded-xl transition-all duration-300 ${
-                                                            originalIndex === 0 
+                                                            originalIndex === playerIndex 
                                                                 ? 'bg-blue-500 bg-opacity-50 border-2 border-blue-300' 
                                                                 : 'bg-white bg-opacity-20'
                                                         }`}
@@ -170,7 +171,7 @@ const Final = () => {
                                                             <span className="text-2xl">{getMedalEmoji(index + 1)}</span>
                                                             <div>
                                                                 <span className="text-white font-bold text-lg">{name}</span>
-                                                                {originalIndex === 0 && (
+                                                                {originalIndex === playerIndex && (
                                                                     <span className="ml-2 text-blue-200 text-sm">(You)</span>
                                                                 )}
                                                             </div>
